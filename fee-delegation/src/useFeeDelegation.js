@@ -1,13 +1,17 @@
 import { useState, useCallback } from "react";
 
+// Import the Caver library for interacting with the Klaytn blockchain
 const Caver = require("caver-js");
 
 const caver = new Caver("https://api.baobab.klaytn.net:8651"); // Use Baobab testnet
 
+// React hood for handling fee delegation transactions
 function useFeeDelegation() {
+  // These states hold the transaction receip and transaction errors respectively
   const [transactionReceipt, setTranscationReciept] = useState(null);
   const [transactionError, setTransactionError] = useState(null);
 
+  // Signs a transaction
   const handleSignTransaction = useCallback(
     async (senderPrivateKey, toAddress, valueInKLAY) => {
       try {
@@ -26,14 +30,17 @@ function useFeeDelegation() {
           senderPrivateKey
         );
 
+        // Returns the raw signed transaction
         return rawTransaction;
       } catch (err) {
+        // If an error occurs, the error state is set
         setTransactionError(err);
       }
     },
     []
   );
 
+  // Send the signed transaction with the fee payer's signature
   const handleSendTransaction = useCallback(
     async (rawTransaction, feePayerAddress, feePayerPrivateKey) => {
       try {
@@ -46,19 +53,23 @@ function useFeeDelegation() {
           feePayer: feePayerAddress,
         });
 
+        // Set the transaction receipt state if transaction successful
         setTranscationReciept(receipt);
+        // Returns the transaction receipt
         return receipt;
       } catch (err) {
+        // Sets error state if transaction error occurs
         setTransactionError(err);
       }
     },
     []
   );
 
+  // Returns the states and functions from the hook for use in other components
   return {
     transactionReceipt,
     transactionError,
-    handleSignTransaction: handleSignTransaction,
+    signTransaction: handleSignTransaction,
     sendTransaction: handleSendTransaction,
   };
 }
