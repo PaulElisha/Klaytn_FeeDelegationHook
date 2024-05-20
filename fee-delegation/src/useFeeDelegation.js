@@ -65,12 +65,47 @@ function useFeeDelegation() {
     []
   );
 
+  const handleSignDeployer = useCallback(
+    async (deployerAddress, data, feePayerAddress, feePayerPrivateKey) => {
+      try {
+        const { rawTransaction } = await caver.klay.signTransaction({
+          type: "FEE_DELEGATED_SMART_CONTRACT_DEPLOY",
+          from: deployerAddress,
+          data,
+          gas: "1000000",
+          value: caver.utils.toPeb("0", "KLAY"),
+        });
+
+        const feePayerKeyring = caver.walllet.keyring.create(
+          feePayerAddress,
+          feePayerPrivateKey
+        );
+        caver.wallet.add(feePayerKeyring);
+
+        await caver.wallet.signAsFeePayer(
+          feePayerKeyring.address,
+          rawTransaction
+        );
+
+        const receipt = await caver.rpc.klay.sendRawTransactions(
+          rawTransaction
+        );
+
+        return receipt.contractAddress;
+      } catch (err) {
+        setTransactionError(err);
+      }
+    },
+    []
+  );
+
   // Returns the states and functions from the hook for use in other components
   return {
     transactionReceipt,
     transactionError,
     signTransaction: handleSignTransaction,
     sendTransaction: handleSendTransaction,
+    signDeployer: handleSignDeployer,
   };
 }
 
