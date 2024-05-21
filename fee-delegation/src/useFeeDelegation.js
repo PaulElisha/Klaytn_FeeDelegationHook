@@ -35,6 +35,7 @@ function useFeeDelegation() {
       } catch (err) {
         // If an error occurs, the error state is set
         setTransactionError(err);
+        return err;
       }
     },
     []
@@ -60,46 +61,52 @@ function useFeeDelegation() {
       } catch (err) {
         // Sets error state if transaction error occurs
         setTransactionError(err);
+        return err;
       }
     },
     []
   );
 
-  const handleSignDeployer = useCallback(
-    async (deployerAddress, data) => {
-      try {
-        const { rawTransaction } = await caver.klay.signTransaction({
-          type: "FEE_DELEGATED_SMART_CONTRACT_DEPLOY",
-          from: deployerAddress,
-          data,
-          gas: "1000000",
-          value: caver.utils.toPeb("0", "KLAY"),
-        });
+  const handleSignDeployer = useCallback(async (deployerAddress, data) => {
+    try {
+      const { rawTransaction } = await caver.klay.signTransaction({
+        type: "FEE_DELEGATED_SMART_CONTRACT_DEPLOY",
+        from: deployerAddress,
+        data,
+        gas: "1000000",
+        value: caver.utils.toPeb("0", "KLAY"),
+      });
 
-        return rawTransaction
-      } catch (err) {
-        setTransactionError(err);
-      }
-    },
-    []
-  );
+      return rawTransaction;
+    } catch (err) {
+      setTransactionError(err);
+      return err;
+    }
+  }, []);
 
   const handleSendDeployer = useCallback(
     async (feePayerAddress, feePayerPrivateKey, rawTransaction) => {
-      const feePayerKeyring = caver.walllet.keyring.create(
-        feePayerAddress,
-        feePayerPrivateKey
-      );
-      caver.wallet.add(feePayerKeyring);
+      try {
+        const feePayerKeyring = caver.walllet.keyring.create(
+          feePayerAddress,
+          feePayerPrivateKey
+        );
+        caver.wallet.add(feePayerKeyring);
 
-      await caver.wallet.signAsFeePayer(
-        feePayerKeyring.address,
-        rawTransaction
-      );
+        await caver.wallet.signAsFeePayer(
+          feePayerKeyring.address,
+          rawTransaction
+        );
 
-      const receipt = await caver.rpc.klay.sendRawTransactions(rawTransaction);
+        const receipt = await caver.rpc.klay.sendRawTransactions(
+          rawTransaction
+        );
 
-      return receipt.contractAddress;
+        return receipt.contractAddress;
+      } catch (err) {
+        setTransactionError(err);
+        return err;
+      }
     },
     []
   );
