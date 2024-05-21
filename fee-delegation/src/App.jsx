@@ -75,6 +75,7 @@ function App() {
 
   const closeReceipt = () => {
     document.querySelector(".receiptContainer").style.display = "none";
+    console.log("Close receipt")
   };
 
   return (

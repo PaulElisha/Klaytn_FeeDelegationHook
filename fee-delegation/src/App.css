@@ -28,7 +28,7 @@
 .App form header {
   text-align: center;
   color: rgb(155, 9, 29);
-  margin: 0;
+  margin-bottom: 15px;
 }
 
 .App form .feeDelegationForm {

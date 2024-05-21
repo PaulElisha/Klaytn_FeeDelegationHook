@@ -38,6 +38,7 @@ export default class Receipt extends Component {
   }
 
   render() {
+    const { closeReceipt } = this.props;
     return (
       <div className="receiptContainer">
         <div className="receipt">
@@ -66,7 +67,7 @@ export default class Receipt extends Component {
           <h3>Sender's Receipt</h3>
           <p>{this.state.senderReceipt}</p>
           <h3>Deployer's Receipt</h3>
-          <span onClick={this.state.closeReceipt} className="close">
+          <span onClick={closeReceipt} className="close">
             Close
           </span>
         </div>
