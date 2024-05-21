@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
-// import useFeeDelegation from "./useFeeDelegation";
-import Receipt from "./Receipt";
+import useFeeDelegation from "./useFeeDelegation";
+import Receipt from "./Receipt.jsx";
 import "./App.css";
 import "./Receipt.css";
 
@@ -14,7 +14,10 @@ function App() {
   const [senderReceipt, setSenderReceipt] = useState(null);
   const [deployerReceipt, setDeployerReceipt] = useState(null);
 
-  // const { signTransaction, sendTransaction, signDeployer, sendDeployer } = useFeeDelegation();
+  const { signTransaction, sendTransaction, signDeployer, sendDeployer } =
+    useFeeDelegation();
+  console.log(useFeeDelegation);
+  console.log(signTransaction, sendTransaction, signDeployer, sendDeployer);
 
   const handleTransactions = async (e) => {
     e.preventDefault();
@@ -75,7 +78,7 @@ function App() {
 
   const closeReceipt = () => {
     document.querySelector(".receiptContainer").style.display = "none";
-    console.log("Close receipt")
+    console.log("Close receipt");
   };
 
   return (
