@@ -19,7 +19,6 @@ function App() {
   const handleTransactions = async (e) => {
     e.preventDefault();
 
-
     const senderPrivateKey = document.getElementById("senderPrivateKey").value;
     const destination = document.getElementById("destination").value;
     const feePayerAddress = document.getElementById("feePayerAddress").value;
@@ -27,41 +26,51 @@ function App() {
       document.getElementById("feePayerPrivateKey").value;
     const amountInKlay = document.getElementById("klayValue").value;
 
-    setSenderPrivateKey(senderPrivateKey);
-    setDestination(destination);
-    setFeePayerAddress(feePayerAddress);
-    setFeePayerPrivateKey(feePayerPrivateKey);
-    setKlayAmount(amountInKlay);
+    if (
+      !senderPrivateKey ||
+      !destination ||
+      !feePayerAddress ||
+      !feePayerPrivateKey ||
+      !amountInKlay
+    ) {
+      document.querySelector(".error").style.display = "block";
+    } else {
+      setSenderPrivateKey(senderPrivateKey);
+      setDestination(destination);
+      setFeePayerAddress(feePayerAddress);
+      setFeePayerPrivateKey(feePayerPrivateKey);
+      setKlayAmount(amountInKlay);
 
-    // const rawTransaction =
-    //   await signTransaction(
-    //     senderPrivateKey,
-    //     destination,
-    //     amountInKlay
-    //   );
+      // const rawTransaction =
+      //   await signTransaction(
+      //     senderPrivateKey,
+      //     destination,
+      //     amountInKlay
+      //   );
 
-    // const sendTransaction =
-    //   await sendTransaction(
-    //     rawTransaction,
-    //     feePayerAddress,
-    //     feePayerPrivateKey
-    //   );
+      // const sendTransaction =
+      //   await sendTransaction(
+      //     rawTransaction,
+      //     feePayerAddress,
+      //     feePayerPrivateKey
+      //   );
 
-    // const deployerTransaction =
-    //   await signDeployer(destination);
+      // const deployerTransaction =
+      //   await signDeployer(destination);
 
-    // const deployerReceipt = await sendDeployer(
-    //   feePayerAddress,
-    //   feePayerPrivateKey,
-    //   rawTransaction
-    // );
+      // const deployerReceipt = await sendDeployer(
+      //   feePayerAddress,
+      //   feePayerPrivateKey,
+      //   rawTransaction
+      // );
 
-    // setSenderReceipt(sendTransaction);
-    // setDeployerReceipt(deployerReceipt)
+      // setSenderReceipt(sendTransaction);
+      // setDeployerReceipt(deployerReceipt)
 
-    // console.log(sendTransaction, deployerReceipt);
-    document.querySelector(".receiptContainer").style.display = "flex";
-    // return [sendTransaction, deployerReceipt];
+      // console.log(sendTransaction, deployerReceipt);
+      document.querySelector(".receiptContainer").style.display = "flex";
+      // return [sendTransaction, deployerReceipt];
+    }
   };
 
   const closeReceipt = () => {
@@ -87,35 +96,35 @@ function App() {
             <h1>Fee Delegation</h1>
           </header>
           <div className="feeDelegationForm">
-            <label htmlFor="senderPrivateKey">Sender Private Key:</label>
+            <label htmlFor="senderPrivateKey">Sender Private Key:*</label>
             <input
               type="text"
               id="senderPrivateKey"
               name="senderPrivateKey"
               required
             ></input>
-            <label htmlFor="destination">Destination:</label>
+            <label htmlFor="destination">Destination:*</label>
             <input
               type="text"
               id="destination"
               name="destination"
               required
             ></input>
-            <label htmlFor="feePayerAddress">Fee Payer Address</label>
+            <label htmlFor="feePayerAddress">Fee Payer Address:*</label>
             <input
               type="text"
               id="feePayerAddress"
               name="feePayerAddress"
               required
             ></input>
-            <label htmlFor="feePayerPrivateKey">Fee Payer Private Key</label>
+            <label htmlFor="feePayerPrivateKey">Fee Payer Private Key:*</label>
             <input
               type="text"
               id="feePayerPrivateKey"
               name="feePayerPrivateKey"
               required
             ></input>
-            <label htmlFor="klayValue">Amount in Klay:</label>
+            <label htmlFor="klayValue">Amount in Klay:*</label>
             <input
               type="number"
               id="klayValue"
@@ -124,6 +133,7 @@ function App() {
             ></input>
             <button onClick={handleTransactions}>Send</button>
           </div>
+          <span className="error">Please fill all the required details</span>
         </form>
       </div>
     </React.Fragment>

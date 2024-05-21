@@ -44,23 +44,23 @@ export default class Receipt extends Component {
           <h1>Transaction Receipt</h1>
           <h3>Details</h3>
           <p>
-            <span>Sender's Private Key:</span>
+            <span>Sender's Private Key: </span>
             {this.state.senderKey}
           </p>
           <p>
-            <span>Fee Payer Private Key:</span>
+            <span>Fee Payer Private Key: </span>
             {this.state.feePayerKey}
           </p>
           <p>
-            <span>Destination Address:</span>
+            <span>Destination Address: </span>
             {this.state.destination}
           </p>
           <p>
-            <span>Fee Payer Address</span>
+            <span>Fee Payer Address: </span>
             {this.state.feePayerAddress}
           </p>
           <p>
-            <span>Klay Amount:</span>
+            <span>Klay Amount: </span>
             {this.state.klay}
           </p>
           <h3>Sender's Receipt</h3>

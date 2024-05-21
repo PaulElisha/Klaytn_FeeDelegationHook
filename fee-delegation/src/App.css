@@ -59,3 +59,11 @@
 .App form .feeDelegationForm button:hover {
   background-color: rgb(238, 78, 39);
 }
+
+.App form .error {
+  display: none;
+  text-align: center;
+  color: red;
+  margin-block: 5px;
+  font-size: 14px;
+}
